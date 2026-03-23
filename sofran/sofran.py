@@ -91,7 +91,7 @@ def navbar() -> rx.Component:
             spacing="6",
         ),
         width="100%",
-        padding="20px 60px",
+        padding=["16px 20px", "16px 40px", "20px 60px"],
     )
 
 
@@ -122,7 +122,8 @@ def hero() -> rx.Component:
         ),
         spacing="6",
         align="center",
-        padding_y="120px",
+        padding_y=["60px", "80px", "120px"],
+        padding_x=["20px", "40px", "0px"],
     )
 
 
@@ -134,9 +135,9 @@ def minimal_card(title: str) -> rx.Component:
             spacing="4",
             align="start",
         ),
-        padding="40px",
+        padding=["24px", "32px", "40px"],
         bg=CARD,
-        width="260px",
+        width=["100%", "220px", "260px"],
         border_radius="12px",
         _hover={"bg": "#1b1b24", "transition": "0.3s"},
     )
@@ -147,9 +148,10 @@ def categories() -> rx.Component:
         minimal_card("Creepy Sculptures"),
         minimal_card("Dark Jewelry"),
         minimal_card("Organic Paintings"),
-        spacing="8",
+        spacing=["4", "6", "8"],
         justify="center",
-        padding_bottom="80px",
+        padding_bottom=["40px", "60px", "80px"],
+        padding_x=["20px", "40px", "0px"],
         flex_wrap="wrap",
     )
 
@@ -204,9 +206,9 @@ def gallery_page(title: str, slug: str) -> rx.Component:
                     GalleryState.products,
                     product_card,
                 ),
-                columns="3",
-                spacing="6",
-                padding="60px",
+                columns=["1", "2", "3"],
+                spacing=["4", "5", "6"],
+                padding=["20px", "40px", "60px"],
                 width="100%",
             ),
             spacing="8",
@@ -311,8 +313,8 @@ def contact() -> rx.Component:
                     ),
                 ),
                 spacing="6",
-                width="500px",
-                padding_y="80px",
+                width=["90%", "460px", "500px"],
+                padding_y=["40px", "60px", "80px"],
             ),
             align="center",
             width="100%",
