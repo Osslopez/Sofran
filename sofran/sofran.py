@@ -3,15 +3,13 @@ import sqlmodel
 from sofran.models.database import Category, Product, ProductImage, ContactMessage
 
 # ── Colores ──────────────────────────────────────────
-GREEN      = "#2c8165"
-GREEN_DARK = "#1a4d3a"
-GREEN_DIM  = "#1f5c47"
-BG         = "#0b0f0d"
-CARD       = "#111614"
-CARD2      = "#161d1a"
-MUTED      = "#4a7a63"
-TEXT_DIM   = "#6b8f7e"
-LILAC      = "#2c8165"   # reemplazamos morado por verde
+GREEN    = "#3a7a5e"     # verde solo para acentos pequeños
+BG       = "#0a0a0a"    # negro casi puro
+CARD     = "#111111"    # gris muy oscuro
+CARD2    = "#161616"
+MUTED    = "#888888"    # gris para textos secundarios
+TEXT_DIM = "#555555"
+LILAC    = "#3a7a5e"    # acento verde suave
 
 # ── State ─────────────────────────────────────────────
 class GalleryState(rx.State):
@@ -74,7 +72,14 @@ class ContactState(rx.State):
 def navbar() -> rx.Component:
     return rx.hstack(
         rx.link(
-            rx.text("SOFRAN", letter_spacing="0.3em", color="#4b8652"),
+            rx.text(
+    "SOFRAN",
+    letter_spacing="0.3em",
+    color="#a3c4b5",
+    font_family="Cormorant Garamond, serif",
+    font_size="22px",
+    font_weight="300",
+),
             href="/",
         ),
         rx.spacer(),
@@ -93,16 +98,20 @@ def navbar() -> rx.Component:
 def hero() -> rx.Component:
     return rx.vstack(
         rx.heading(
-            "Art born from shadow and nature",
-            size="8",
-            text_align="center",
-            max_width="700px",
-        ),
+    "Art born from shadow and nature",
+    size="8",
+    text_align="center",
+    max_width="700px",
+    font_family="Cormorant Garamond, serif",
+    font_weight="300",
+    letter_spacing="0.05em",
+),
         rx.text(
-            "Handcrafted works by Annabella Sofran.",
-            color="#2e5e4e",
-            font_size="18px",
-        ),
+    "Handcrafted works by Annabella Sofran.",
+    color="#666666",
+    font_size="18px",
+    letter_spacing="0.1em",
+),
         rx.button(
             " View Collections ",
             bg="transparent",
@@ -314,7 +323,12 @@ def contact() -> rx.Component:
     )
 
 # ── App ───────────────────────────────────────────────
-app = rx.App(stylesheets=["/style.css"])  # pylint: disable=not-callable
+app = rx.App(
+    stylesheets=[
+        "https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Raleway:wght@300;400;500&display=swap",
+        "/style.css",
+    ]
+)  # pylint: disable=not-callable
 
 app.add_page(index,      route="/")
 app.add_page(sculptures, route="/sculptures")
