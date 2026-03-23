@@ -23,3 +23,10 @@ class ProductImage(rx.Model, table=True):
     product_id: int              # referencia a Product
     url: str                     # ruta de la imagen
     is_primary: bool = False     # imagen principal del producto
+
+# ── Mensaje de contacto ───────────────────────────────
+class ContactMessage(rx.Model, table=True):
+    name: str
+    email: str
+    message: str
+    created_at: Optional[str] = None    

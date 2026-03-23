@@ -1,6 +1,6 @@
 import reflex as rx
 import sqlmodel
-from sofran.models.database import Category, Product, ProductImage
+from sofran.models.database import Category, Product, ProductImage, ContactMessage
 
 # ── Colores ──────────────────────────────────────────
 LILAC = "#643E99"
@@ -34,6 +34,38 @@ class GalleryState(rx.State):
                     }
                     for p in items
                 ]
+
+class ContactState(rx.State):
+    name: str = ""
+    email: str = ""
+    message: str = ""
+    sent: bool = False
+
+    def set_name(self, value: str):
+        self.name = value
+
+    def set_email(self, value: str):
+        self.email = value
+
+    def set_message(self, value: str):
+        self.message = value
+
+    def send_message(self):
+        with rx.session() as session:
+            session.add(
+                ContactMessage(
+                    name=self.name,
+                    email=self.email,
+                    message=self.message,
+                )
+            )
+            session.commit()
+
+        self.name = ""
+        self.email = ""
+        self.message = ""
+        self.sent = True
+
 # ── Componentes ──────────────────────────────────────
 def navbar() -> rx.Component:
     return rx.hstack(
@@ -46,6 +78,7 @@ def navbar() -> rx.Component:
             rx.link("Sculptures", href="/sculptures"),
             rx.link("Jewelry",    href="/jewelry"),
             rx.link("Paintings",  href="/paintings"),
+            rx.link("Contact",    href="/contact"),
             spacing="6",
         ),
         width="100%",
@@ -200,6 +233,80 @@ def jewelry() -> rx.Component:
 def paintings() -> rx.Component:
     return gallery_page("Organic Paintings", "paintings")
 
+def contact() -> rx.Component:
+    return rx.box(
+        rx.vstack(
+            navbar(),
+            rx.vstack(
+                rx.heading(
+                    "Get in touch",
+                    size="8",
+                    text_align="center",
+                ),
+                rx.text(
+                    "Commission a piece or ask about availability.",
+                    color="#888",
+                    text_align="center",
+                ),
+                rx.cond(
+                    ContactState.sent,
+                    rx.text(
+                        "✅ Message sent! I'll get back to you soon.",
+                        color=GREEN,
+                        font_size="16px",
+                    ),
+                    rx.vstack(
+                        rx.input(
+                            placeholder="Your name",
+                            value=ContactState.name,
+                            on_change=ContactState.set_name,
+                            bg=CARD,
+                            border="1px solid #333",
+                            color="white",
+                            width="100%",
+                        ),
+                        rx.input(
+                            placeholder="Your email",
+                            value=ContactState.email,
+                            on_change=ContactState.set_email,
+                            bg=CARD,
+                            border="1px solid #333",
+                            color="white",
+                            width="100%",
+                        ),
+                        rx.text_area(
+                            placeholder="Your message",
+                            value=ContactState.message,
+                            on_change=ContactState.set_message,
+                            bg=CARD,
+                            border="1px solid #333",
+                            color="white",
+                            width="100%",
+                            rows="6",
+                        ),
+                        rx.button(
+                            "Send Message",
+                            on_click=ContactState.send_message,
+                            bg=LILAC,
+                            color="white",
+                            width="100%",
+                            _hover={"bg": "#7a4db8"},
+                        ),
+                        spacing="4",
+                        width="100%",
+                    ),
+                ),
+                spacing="6",
+                width="500px",
+                padding_y="80px",
+            ),
+            align="center",
+            width="100%",
+        ),
+        bg=BG,
+        color="white",
+        min_height="100vh",
+    )
 
 # ── App ───────────────────────────────────────────────
 app = rx.App(stylesheets=["/style.css"])  # pylint: disable=not-callable
@@ -208,3 +315,4 @@ app.add_page(index,      route="/")
 app.add_page(sculptures, route="/sculptures")
 app.add_page(jewelry,    route="/jewelry")
 app.add_page(paintings,  route="/paintings")
+app.add_page(contact, route="/contact")
