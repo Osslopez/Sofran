@@ -1,4 +1,5 @@
 import reflex as rx
+import sqlmodel
 from sofran.models.database import Category, Product, ProductImage
 
 # ── Colores ──────────────────────────────────────────
@@ -8,7 +9,31 @@ BG    = "#0b0b10"
 MUTED = "#d967dd"
 CARD  = "#14141a"
 
+# ── State ─────────────────────────────────────────────
+class GalleryState(rx.State):
+    products: list[dict] = []
 
+    def load_products(self, slug: str):
+        with rx.session() as session:
+            category = session.exec(
+                sqlmodel.select(Category).where(Category.slug == slug)
+            ).first()
+
+            if category:
+                items = session.exec(
+                    sqlmodel.select(Product).where(
+                        Product.category_id == category.id
+                    )
+                ).all()
+
+                self.products = [
+                    {
+                        "name": p.name,
+                        "description": p.description,
+                        "price": p.price,
+                    }
+                    for p in items
+                ]
 # ── Componentes ──────────────────────────────────────
 def navbar() -> rx.Component:
     return rx.hstack(
@@ -82,34 +107,70 @@ def categories() -> rx.Component:
     )
 
 
-def gallery_page(title: str) -> rx.Component:
+def product_card(product: dict) -> rx.Component:
     return rx.box(
         rx.vstack(
-            rx.heading(title, size="8"),
+            rx.box(
+                bg="#1b1b24",
+                height="200px",
+                width="100%",
+                border_radius="8px 8px 0 0",
+            ),
+            rx.vstack(
+                rx.text(
+                    product["name"],
+                    color="white",
+                    font_weight="bold",
+                ),
+                rx.text(
+                    product["description"],
+                    color="#888",
+                    font_size="14px",
+                ),
+                rx.text(
+                    "$" + product["price"].to_string(),
+                    color=MUTED,
+                    font_size="16px",
+                ),
+                spacing="2",
+                align="start",
+                padding="16px",
+            ),
+            spacing="0",
+        ),
+        bg=CARD,
+        border_radius="10px",
+        _hover={
+            "transform": "scale(1.03)",
+            "transition": "0.3s",
+        },
+    )
+
+
+def gallery_page(title: str, slug: str) -> rx.Component:
+    return rx.box(
+        rx.vstack(
+            navbar(),
+            rx.heading(title, size="8", padding_top="60px"),
             rx.grid(
-                *[
-                    rx.box(
-                        bg="#1b1b24",
-                        height="250px",
-                        border_radius="10px",
-                        _hover={
-                            "transform": "scale(1.03)",
-                            "transition": "0.3s",
-                        },
-                    )
-                    for _ in range(6)
-                ],
+                rx.foreach(
+                    GalleryState.products,
+                    product_card,
+                ),
                 columns="3",
                 spacing="6",
+                padding="60px",
+                width="100%",
             ),
             spacing="8",
-            padding="60px",
+            align="center",
+            width="100%",
         ),
         bg=BG,
         color="white",
         min_height="100vh",
+        on_mount=GalleryState.load_products(slug),
     )
-
 
 # ── Páginas ───────────────────────────────────────────
 def index() -> rx.Component:
@@ -129,15 +190,15 @@ def index() -> rx.Component:
 
 
 def sculptures() -> rx.Component:
-    return gallery_page("Creepy Sculptures")
+    return gallery_page("Creepy Sculptures", "sculptures")
 
 
 def jewelry() -> rx.Component:
-    return gallery_page("Dark Jewelry")
+    return gallery_page("Dark Jewelry", "jewelry")
 
 
 def paintings() -> rx.Component:
-    return gallery_page("Organic Paintings")
+    return gallery_page("Organic Paintings", "paintings")
 
 
 # ── App ───────────────────────────────────────────────
