@@ -3,11 +3,15 @@ import sqlmodel
 from sofran.models.database import Category, Product, ProductImage, ContactMessage
 
 # ── Colores ──────────────────────────────────────────
-LILAC = "#643E99"
-GREEN = "#2c8165"
-BG    = "#0b0b10"
-MUTED = "#d967dd"
-CARD  = "#14141a"
+GREEN      = "#2c8165"
+GREEN_DARK = "#1a4d3a"
+GREEN_DIM  = "#1f5c47"
+BG         = "#0b0f0d"
+CARD       = "#111614"
+CARD2      = "#161d1a"
+MUTED      = "#4a7a63"
+TEXT_DIM   = "#6b8f7e"
+LILAC      = "#2c8165"   # reemplazamos morado por verde
 
 # ── State ─────────────────────────────────────────────
 class GalleryState(rx.State):
@@ -70,7 +74,7 @@ class ContactState(rx.State):
 def navbar() -> rx.Component:
     return rx.hstack(
         rx.link(
-            rx.text("SOFRAN", letter_spacing="0.3em", color="#c46d9d"),
+            rx.text("SOFRAN", letter_spacing="0.3em", color="#4b8652"),
             href="/",
         ),
         rx.spacer(),
@@ -100,10 +104,11 @@ def hero() -> rx.Component:
             font_size="18px",
         ),
         rx.button(
-            "View Collections",
+            " View Collections ",
             bg="transparent",
-            border="1px solid #c8a2ff",
-            color="#c8a2ff",
+            border="1px solid #2c8165",
+            color="#8993A3",
+            padding="12px 32px",
             _hover={"bg": "#1a1a22"},
         ),
         spacing="6",
