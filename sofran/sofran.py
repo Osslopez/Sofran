@@ -91,7 +91,7 @@ def navbar() -> rx.Component:
             spacing="6",
         ),
         width="100%",
-        padding=["16px 20px", "16px 40px", "20px 60px"],
+        padding={"base": "16px 20px", "sm": "16px 40px", "md": "20px 60px"},
     )
 
 
@@ -122,8 +122,8 @@ def hero() -> rx.Component:
         ),
         spacing="6",
         align="center",
-        padding_y=["60px", "80px", "120px"],
-        padding_x=["20px", "40px", "0px"],
+        padding_y={"base": "60px", "sm": "80px", "md": "120px"},
+        padding_x={"base": "20px", "sm": "40px", "md": "0px"},
     )
 
 
@@ -135,9 +135,9 @@ def minimal_card(title: str) -> rx.Component:
             spacing="4",
             align="start",
         ),
-        padding=["24px", "32px", "40px"],
+        padding={"base": "24px", "sm": "32px", "md": "40px"},
         bg=CARD,
-        width=["100%", "220px", "260px"],
+        width={"base": "100%", "sm": "220px", "md": "260px"},
         border_radius="12px",
         _hover={"bg": "#1b1b24", "transition": "0.3s"},
     )
@@ -148,10 +148,10 @@ def categories() -> rx.Component:
         minimal_card("Creepy Sculptures"),
         minimal_card("Dark Jewelry"),
         minimal_card("Organic Paintings"),
-        spacing=["4", "6", "8"],
+        spacing="8",
         justify="center",
-        padding_bottom=["40px", "60px", "80px"],
-        padding_x=["20px", "40px", "0px"],
+        padding_bottom={"base": "40px", "sm": "60px", "md": "80px"},
+        padding_x={"base": "20px", "sm": "40px", "md": "0px"},
         flex_wrap="wrap",
     )
 
@@ -206,9 +206,9 @@ def gallery_page(title: str, slug: str) -> rx.Component:
                     GalleryState.products,
                     product_card,
                 ),
-                columns=["1", "2", "3"],
-                spacing=["4", "5", "6"],
-                padding=["20px", "40px", "60px"],
+                columns={"base": "1", "sm": "2", "md": "3"},
+                spacing="8",
+                padding={"base": "20px", "sm": "40px", "md": "60px"},
                 width="100%",
             ),
             spacing="8",
@@ -313,8 +313,8 @@ def contact() -> rx.Component:
                     ),
                 ),
                 spacing="6",
-                width=["90%", "460px", "500px"],
-                padding_y=["40px", "60px", "80px"],
+                width={"base": "90%", "sm": "460px", "md": "500px"},
+                padding_y={"base": "40px", "sm": "60px", "md": "80px"},
             ),
             align="center",
             width="100%",
