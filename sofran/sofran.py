@@ -1,4 +1,5 @@
 import reflex as rx
+from sofran.models.database import Category, Product, ProductImage
 
 # ── Colores ──────────────────────────────────────────
 LILAC = "#643E99"
@@ -140,7 +141,7 @@ def paintings() -> rx.Component:
 
 
 # ── App ───────────────────────────────────────────────
-app = rx.App(stylesheets=["/style.css"])
+app = rx.App(stylesheets=["/style.css"])  # pylint: disable=not-callable
 
 app.add_page(index,      route="/")
 app.add_page(sculptures, route="/sculptures")
